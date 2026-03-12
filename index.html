@@ -3,342 +3,356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brefly — L'actu en bref</title>
-<meta name="description" content="Brefly — Toute l'actualité en bref, en temps réel. Monde, Tech, Sport, Gaming, Science, Culture, Économie">
+<title>Brefly — L'actu en temps réel</title>
+<meta name="description" content="Brefly — L'actualité mondiale en temps réel. Tech, Sport, Monde, Science, Culture, Économie.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;
-  --text:#f0f0fa;--muted:#888899;
-  --accent1:#ff3d6b;--accent2:#7c3aed;--accent3:#06d6a0;--accent4:#ffd166;--accent5:#118ab2;
-  --grad1:linear-gradient(135deg,#ff3d6b,#7c3aed);
-  --grad2:linear-gradient(135deg,#06d6a0,#118ab2);
-  --grad3:linear-gradient(135deg,#ffd166,#ff3d6b);
+:root{
+  --bg:#080810;--s1:#0f0f1a;--s2:#161624;--s3:#1e1e30;
+  --border:#252538;--border2:#2e2e48;
+  --text:#eeeef8;--muted:#7070a0;--muted2:#4a4a70;
+  --a1:#ff3d6b;--a2:#7c3aed;--a3:#06d6a0;--a4:#ffd166;--a5:#38bdf8;--a6:#fb923c;
+  --g1:linear-gradient(135deg,#ff3d6b,#7c3aed);
+  --g2:linear-gradient(135deg,#06d6a0,#0ea5e9);
+  --g3:linear-gradient(135deg,#ffd166,#ff3d6b);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:2px}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--a2);border-radius:2px}
 
-/* SETUP BANNER */
-#setupBanner{background:linear-gradient(90deg,rgba(255,61,107,.15),rgba(124,58,237,.15));border-bottom:1px solid rgba(255,61,107,.3);padding:10px 24px;text-align:center;font-family:'Syne',sans-serif;font-size:13px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
-#setupBanner strong{color:var(--accent1)}
-#setupBanner a{color:var(--accent2);text-decoration:underline;cursor:pointer}
-.btn-setup{background:var(--grad1);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-
-/* API CONFIG MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;max-width:520px;width:100%;animation:slideUp .3s ease}
-@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:28px;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
-.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
-.modal-step{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
-.step-num{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--accent2);letter-spacing:2px;margin-bottom:6px}
-.step-text{font-size:13px;color:var(--muted);line-height:1.6}
-.step-text a{color:var(--accent2);text-decoration:none}
-.step-text a:hover{text-decoration:underline}
-.modal-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-top:16px;transition:border-color .2s}
-.modal-input:focus{border-color:var(--accent2)}
-.modal-input::placeholder{color:var(--muted)}
-.modal-actions{display:flex;gap:10px;margin-top:16px}
-.btn-save{flex:1;background:var(--grad1);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s}
-.btn-save:hover{opacity:.85}
-.btn-demo{background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:12px 20px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
-.btn-demo:hover{border-color:var(--accent3);color:var(--accent3)}
-
-/* HEADER */
-header{position:sticky;top:0;z-index:900;background:rgba(10,10,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px}
-.header-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:20px;height:64px}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;flex-shrink:0;cursor:pointer}
-.search-bar{flex:1;max-width:420px;display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0 14px;transition:border-color .2s}
-.search-bar:focus-within{border-color:var(--accent2)}
-.search-bar svg{color:var(--muted);flex-shrink:0}
-.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;width:100%;padding:10px 0}
-.search-bar input::placeholder{color:var(--muted)}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.live-dot{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--accent1);font-family:'Syne',sans-serif;font-weight:700}
-.live-dot::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent1);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
-.btn-pill{padding:8px 18px;border-radius:50px;font-size:13px;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;border:none}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-outline:hover{border-color:var(--accent2);color:var(--text)}
-.btn-primary{background:var(--grad1);color:#fff}
-.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
-
-/* TICKER */
-.ticker-wrap{background:var(--accent1);overflow:hidden;height:36px;display:flex;align-items:center}
-.ticker-label{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;background:#000;color:var(--accent1);padding:0 16px;height:100%;display:flex;align-items:center;flex-shrink:0}
-.ticker-inner{overflow:hidden;flex:1;display:flex;align-items:center}
-.ticker-track{display:flex;gap:60px;white-space:nowrap}
-.ticker-track span{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:#fff}
-.ticker-track .dot{color:rgba(255,255,255,.5)}
-.ticker-animated{animation:ticker 40s linear infinite}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* LAYOUT */
-.page{max-width:1300px;margin:0 auto;padding:28px 24px}
-
-/* CHANNELS */
-.channels-section{margin-bottom:28px}
-.section-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.channels-row{display:flex;gap:8px;flex-wrap:wrap}
-.channel-chip{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:50px;border:1px solid var(--border);background:var(--surface);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;user-select:none}
-.channel-chip .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.channel-chip:hover{border-color:var(--accent2)}
-.channel-chip.active{border-color:transparent;color:#fff}
-.channel-chip.active[data-ch=monde]{background:linear-gradient(135deg,#ff3d6b,#7c3aed)}
-.channel-chip.active[data-ch=tech]{background:linear-gradient(135deg,#7c3aed,#118ab2)}
-.channel-chip.active[data-ch=sport]{background:linear-gradient(135deg,#06d6a0,#0a9068)}
-.channel-chip.active[data-ch=gaming]{background:linear-gradient(135deg,#ffd166,#ff3d6b)}
-.channel-chip.active[data-ch=science]{background:linear-gradient(135deg,#118ab2,#06d6a0)}
-.channel-chip.active[data-ch=culture]{background:linear-gradient(135deg,#ff9f1c,#ffbf69)}
-.channel-chip.active[data-ch=eco]{background:linear-gradient(135deg,#2ec4b6,#3a86ff)}
-.follow-btn{margin-left:4px;font-size:11px;padding:2px 8px;border-radius:50px;border:1px solid currentColor;background:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;transition:all .2s;color:inherit}
-.channel-chip.active .follow-btn{border-color:rgba(255,255,255,.4);color:#fff}
-.follow-btn.following{background:rgba(255,255,255,.15)}
-
-/* TAGS */
-.tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
-.tag-monde{background:rgba(255,61,107,.15);color:var(--accent1)}
-.tag-tech{background:rgba(124,58,237,.15);color:#a78bfa}
-.tag-sport{background:rgba(6,214,160,.15);color:var(--accent3)}
-.tag-gaming{background:rgba(255,209,102,.15);color:var(--accent4)}
-.tag-science{background:rgba(17,138,178,.15);color:#38bdf8}
-.tag-culture{background:rgba(255,159,28,.15);color:#fb923c}
-.tag-eco{background:rgba(46,196,182,.15);color:#2dd4bf}
-.tag-general{background:rgba(255,61,107,.1);color:var(--muted)}
-
-/* FEATURED GRID */
-.featured-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:36px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s;cursor:pointer}
-.card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
-.card-hero{grid-column:1/3;position:relative}
-.card-hero .img-wrap{height:280px;overflow:hidden;position:relative}
-.card-hero .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.card-hero:hover .img-wrap img{transform:scale(1.04)}
-.card-hero .img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,15,.9) 0%,transparent 55%)}
-.card-hero .card-body{position:absolute;bottom:0;left:0;right:0;padding:20px 24px}
-.card-side{grid-column:3/4;grid-row:1/3;display:flex;flex-direction:column;gap:14px}
-.card-side .card{flex:1}
-.card-small .img-wrap{height:120px;overflow:hidden}
-.card-small .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.card-small:hover .img-wrap img{transform:scale(1.05)}
-.card-body{padding:16px 18px 18px}
-.card-title{font-family:'Syne',sans-serif;font-weight:800;line-height:1.25}
-.card-hero .card-title{font-size:21px;color:#fff}
-.card-small .card-title{font-size:14px}
-.card-meta{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}
-.card-meta .sep{opacity:.3}
-.card-source{font-size:11px;color:var(--accent2);font-weight:600;margin-bottom:4px;font-family:'Syne',sans-serif}
-
-/* LOADING SKELETON */
-.skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-img{height:280px;border-radius:0}
-.skel-tag{height:22px;width:70px;margin-bottom:8px}
-.skel-title{height:20px;width:90%;margin-bottom:6px}
-.skel-title.short{width:60%}
-.skel-meta{height:14px;width:50%}
-
-/* FILTER BAR */
-.filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
-.filter-btn{padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
-.filter-btn.active,.filter-btn:hover{border-color:var(--accent2);color:var(--text);background:rgba(124,58,237,.1)}
-.filter-count{font-size:11px;color:var(--muted);margin-left:auto;font-family:'Syne',sans-serif}
-
-/* H-SCROLL */
-.feed-section{margin-bottom:36px}
-.feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.feed-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;display:flex;align-items:center;gap:10px}
-.feed-title .bar{width:4px;height:22px;border-radius:2px}
-.see-all{font-size:13px;color:var(--muted);text-decoration:none;font-family:'Syne',sans-serif;font-weight:600;transition:color .2s}
-.see-all:hover{color:var(--text)}
-.h-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.h-scroll::-webkit-scrollbar{height:3px}
-.h-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.h-card{flex-shrink:0;width:250px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;text-decoration:none;display:block}
-.h-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.h-card .img-wrap{height:130px;overflow:hidden}
-.h-card .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.h-card:hover .img-wrap img{transform:scale(1.05)}
-.h-card .card-body{padding:12px 14px}
-.h-card .card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;line-height:1.3}
-
-/* CONTENT + SIDEBAR */
-.content-area{display:grid;grid-template-columns:1fr 300px;gap:28px;margin-bottom:36px}
-.list-feed{display:flex;flex-direction:column;gap:14px}
-.list-card{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all .2s;text-decoration:none}
-.list-card:hover{border-color:var(--accent2);background:rgba(124,58,237,.06)}
-.list-card .thumb{width:100px;height:68px;border-radius:8px;object-fit:cover;flex-shrink:0}
-.list-card .thumb-placeholder{width:100px;height:68px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.list-body{flex:1;min-width:0}
-.list-card .card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;line-height:1.3;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.list-card .excerpt{font-size:12px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.load-more{text-align:center;margin-top:12px}
-.btn-load{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 32px;border-radius:10px;font-family:'Syne',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s}
-.btn-load:hover{border-color:var(--accent2);color:var(--accent2)}
-.btn-load:disabled{opacity:.4;cursor:not-allowed}
-
-/* SIDEBAR */
-.sidebar{display:flex;flex-direction:column;gap:20px}
-.sidebar-widget{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px}
-.widget-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.trending-list{display:flex;flex-direction:column;gap:11px}
-.trending-item{display:flex;gap:10px;align-items:flex-start;cursor:pointer;transition:opacity .2s;text-decoration:none}
-.trending-item:hover{opacity:.8}
-.trend-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;color:var(--border);flex-shrink:0;width:22px}
-.trending-item:nth-child(1) .trend-num{color:var(--accent1)}
-.trending-item:nth-child(2) .trend-num{color:var(--accent2)}
-.trending-item:nth-child(3) .trend-num{color:var(--accent3)}
-.trend-text{font-family:'Syne',sans-serif;font-weight:600;font-size:12px;line-height:1.35;color:var(--text)}
-.trend-meta{font-size:11px;color:var(--muted);margin-top:2px}
-.my-channels{display:flex;flex-direction:column;gap:8px}
-.my-ch-row{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:10px;background:var(--surface2);cursor:pointer;transition:background .2s}
-.my-ch-row:hover{background:rgba(124,58,237,.12)}
-.ch-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.ch-name{font-family:'Syne',sans-serif;font-weight:600;font-size:12px}
-.ch-count{font-size:11px;color:var(--muted)}
-.ch-badge{margin-left:auto;background:var(--accent1);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px}
-
-/* STATUS BAR */
-.status-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border-radius:8px;font-size:12px;color:var(--muted);font-family:'Syne',sans-serif;margin-bottom:16px}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
-.status-dot.live{background:var(--accent3);animation:pulse 2s infinite}
-.status-dot.error{background:var(--accent1)}
-
-/* NEWSLETTER */
-.newsletter-section{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:44px;text-align:center;position:relative;overflow:hidden;margin-bottom:36px}
-.newsletter-section::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(124,58,237,.2) 0%,transparent 70%);pointer-events:none}
-.nl-eyebrow{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
-.nl-title{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;line-height:1.1;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
-.nl-sub{font-size:14px;color:var(--muted);max-width:400px;margin:0 auto 24px}
-.nl-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
-.nl-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
-.nl-input:focus{border-color:var(--accent2)}
-.nl-input::placeholder{color:var(--muted)}
-.btn-subscribe{background:var(--grad1);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s,transform .2s;white-space:nowrap}
-.btn-subscribe:hover{opacity:.85;transform:translateY(-1px)}
-#nlMsg{margin-top:12px;font-size:13px;color:var(--accent3);display:none}
-
-/* DEPLOY GUIDE */
-.deploy-guide{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:36px}
-.deploy-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:6px}
-.deploy-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
-.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.deploy-step{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px}
-.step-icon{font-size:24px;margin-bottom:8px}
-.step-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:4px}
-.step-desc{font-size:12px;color:var(--muted);line-height:1.5}
-.step-desc a{color:var(--accent2);text-decoration:none}
-.step-desc a:hover{text-decoration:underline}
-.step-badge{display:inline-block;background:rgba(6,214,160,.15);color:var(--accent3);font-size:10px;font-family:'Syne',sans-serif;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:6px}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:28px 24px}
-.footer-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.footer-links{display:flex;gap:18px}
-.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
-.footer-links a:hover{color:var(--text)}
-.footer-copy{font-size:12px;color:var(--muted)}
-
-/* FADE IN */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeUp .4s ease forwards;opacity:0}
-
-/* RESPONSIVE */
-@media(max-width:1024px){.content-area{grid-template-columns:1fr}.sidebar{display:none}.featured-grid{grid-template-columns:1fr 1fr}.card-hero{grid-column:1/3}.card-side{grid-column:1/3;grid-row:auto;flex-direction:row}}
-@media(max-width:640px){.featured-grid{grid-template-columns:1fr}.card-hero,.card-side{grid-column:1/2}.nl-form{flex-direction:column}.steps-grid{grid-template-columns:1fr 1fr}.header-right .btn-outline{display:none}}
+/* CONFIG MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:24px;padding:40px;max-width:500px;width:100%;position:relative;animation:slideUp .35s cubic-bezier(.16,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(40px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--s2);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;transition:all .2s}
+.modal-close:hover{background:var(--a1);border-color:var(--a1);color:#fff}
+.modal h2{font-family:'Bebas Neue',sans-serif;font-size:30px;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.modal p{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.7}
+.modal-step{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:13px;color:var(--muted);line-height:1.6}
+.modal-step strong{color:var(--a2);display:block;font-family:'Syne',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.modal-step a{color:var(--a3);text-decoration:none}
+.modal-step a:hover{text-decoration:underline}
+.modal-step code{background:var(--s3);color:var(--a3);padding:1px 6px;border-radius:4px;font-size:12px}
+.modal-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-top:14px;transition:border-color .2s}
+.modal-input:focus{border-color:var(--a2)}
+.modal-input::placeholder{color:var(--muted2)}
+.modal-actions{display:flex;gap:10px;margin-top:12px}
+.btn-save{flex:1;background:var(--g1);color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s,transform .15s}
+.btn-save:hover{opacity:.88;transform:translateY(-1px)}
+.btn-skip{background:var(--s2);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:13px 18px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;transition:all .2s}
+.btn-skip:hover{border-color:var(--a3);color:var(--a3)}
 
 /* ARTICLE MODAL */
-.article-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:1500;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .3s}
-.article-modal.open{opacity:1;pointer-events:all}
-.article-inner{max-width:760px;margin:60px auto;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
-.article-img{width:100%;height:320px;object-fit:cover}
-.article-content{padding:32px}
-.article-close{position:sticky;top:20px;float:right;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;margin:-10px -10px 10px 10px;transition:all .2s;z-index:1}
-.article-close:hover{background:var(--accent1);border-color:var(--accent1)}
-.article-headline{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;line-height:1.3;margin-bottom:16px}
-.article-desc{color:var(--muted);line-height:1.7;margin-bottom:20px}
-.article-cta{display:inline-block;background:var(--grad1);color:#fff;text-decoration:none;padding:12px 24px;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;transition:opacity .2s}
-.article-cta:hover{opacity:.85}
+.art-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(20px);z-index:2000;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .3s}
+.art-overlay.open{opacity:1;pointer-events:all}
+.art-modal{max-width:800px;margin:48px auto 80px;background:var(--s1);border:1px solid var(--border2);border-radius:24px;overflow:hidden;animation:slideUp .4s cubic-bezier(.16,1,.3,1)}
+.art-imgwrap{position:relative;height:380px;overflow:hidden;background:var(--s2)}
+.art-imgwrap img{width:100%;height:100%;object-fit:cover}
+.art-imgwrap .grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,16,1) 0%,rgba(8,8,16,.4) 40%,transparent 100%)}
+.art-imgwrap .art-close-btn{position:absolute;top:16px;right:16px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:18px;transition:all .2s;z-index:2}
+.art-imgwrap .art-close-btn:hover{background:var(--a1);border-color:var(--a1)}
+.art-body{padding:34px 36px 40px}
+.art-meta-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.art-source{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--a3);letter-spacing:.5px}
+.art-date-str{font-size:12px;color:var(--muted)}
+.art-title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;line-height:1.25;margin-bottom:18px;color:var(--text)}
+.art-desc{color:var(--muted);line-height:1.8;font-size:15px;margin-bottom:28px}
+.art-cta{display:inline-flex;align-items:center;gap:10px;background:var(--g1);color:#fff;text-decoration:none;padding:15px 28px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;transition:opacity .2s,transform .15s}
+.art-cta:hover{opacity:.88;transform:translateY(-2px)}
+.art-cta svg{width:15px;height:15px}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:900;background:rgba(8,8,16,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.hdr{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:16px;height:62px;padding:0 24px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:30px;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;flex-shrink:0;cursor:pointer;user-select:none;display:flex;align-items:baseline;gap:6px}
+.logo-beta{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;-webkit-text-fill-color:var(--muted2);letter-spacing:1px;text-transform:uppercase}
+.searchbox{flex:1;max-width:380px;display:flex;align-items:center;gap:9px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:0 14px;transition:border-color .2s,box-shadow .2s}
+.searchbox:focus-within{border-color:var(--a2);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.searchbox svg{color:var(--muted);flex-shrink:0}
+.searchbox input{background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;width:100%;padding:10px 0}
+.searchbox input::placeholder{color:var(--muted2)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.live-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700;color:var(--a3);background:rgba(6,214,160,.07);border:1px solid rgba(6,214,160,.2);padding:5px 12px;border-radius:50px;transition:all .3s}
+.live-pill .pdot{width:6px;height:6px;border-radius:50%;background:var(--a3);animation:pulse 1.8s ease-in-out infinite;transition:background .3s}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.6)}}
+.hbtn{padding:8px 18px;border-radius:8px;font-size:13px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;border:none}
+.hbtn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.hbtn-ghost:hover{border-color:var(--a2);color:var(--text)}
+.hbtn-primary{background:var(--g1);color:#fff}
+.hbtn-primary:hover{opacity:.85;transform:translateY(-1px)}
+.hbtn-api{background:rgba(6,214,160,.08);border:1px solid rgba(6,214,160,.2);color:var(--a3);font-size:12px;padding:6px 14px}
+.hbtn-api:hover{background:rgba(6,214,160,.15)}
+
+/* TICKER */
+.ticker{background:var(--a1);height:34px;display:flex;align-items:center;overflow:hidden}
+.ticker-lbl{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2.5px;background:#000;color:var(--a1);padding:0 16px;height:100%;display:flex;align-items:center;flex-shrink:0;white-space:nowrap}
+.ticker-scroll{flex:1;overflow:hidden;display:flex;align-items:center}
+.ticker-track{display:inline-flex;gap:56px;white-space:nowrap;animation:tickmove 50s linear infinite}
+.ticker-track span.ti{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:600;color:#fff;cursor:pointer}
+.ticker-track span.ti:hover{text-decoration:underline}
+.ticker-track span.tsep{color:rgba(255,255,255,.35);pointer-events:none}
+@keyframes tickmove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* PAGE */
+.page{max-width:1440px;margin:0 auto;padding:28px 24px}
+
+/* CHANNELS */
+.chbar{display:flex;align-items:center;gap:8px;margin-bottom:26px;flex-wrap:wrap}
+.cchip{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:50px;border:1px solid var(--border);background:var(--s1);font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap}
+.cchip .cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cchip:hover{border-color:var(--a2);background:rgba(124,58,237,.07)}
+.cchip.on{border-color:transparent!important;color:#fff}
+.cchip.on[data-ch=monde]{background:linear-gradient(135deg,#ff3d6b,#7c3aed)}
+.cchip.on[data-ch=tech]{background:linear-gradient(135deg,#7c3aed,#0ea5e9)}
+.cchip.on[data-ch=sport]{background:linear-gradient(135deg,#06d6a0,#059669)}
+.cchip.on[data-ch=gaming]{background:linear-gradient(135deg,#ffd166,#f97316)}
+.cchip.on[data-ch=science]{background:linear-gradient(135deg,#0ea5e9,#06d6a0)}
+.cchip.on[data-ch=culture]{background:linear-gradient(135deg,#f97316,#fbbf24)}
+.cchip.on[data-ch=eco]{background:linear-gradient(135deg,#2dd4bf,#3b82f6)}
+.cfollow{margin-left:3px;font-size:10px;padding:2px 8px;border-radius:50px;border:1px solid currentColor;background:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;color:inherit;transition:background .15s}
+.cchip.on .cfollow{border-color:rgba(255,255,255,.3);color:#fff}
+.cfollow.on{background:rgba(255,255,255,.15)}
+
+/* STATUS BAR */
+.sbar{display:flex;align-items:center;gap:8px;margin-bottom:18px;padding:0 2px}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
+.sdot.live{background:var(--a3);box-shadow:0 0 8px rgba(6,214,160,.5);animation:pulse 2s infinite}
+.sdot.err{background:var(--a1)}
+.stxt{font-family:'Syne',sans-serif;font-size:12px;color:var(--muted);font-weight:600}
+.supd{margin-left:auto;font-size:11px;color:var(--muted2);font-family:'Syne',sans-serif}
+.scnt{font-size:11px;color:var(--a2);background:rgba(124,58,237,.1);padding:2px 10px;border-radius:50px;font-family:'Syne',sans-serif;font-weight:700;margin-left:8px}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:5px;font-size:10.5px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.tag-monde{background:rgba(255,61,107,.15);color:var(--a1)}
+.tag-tech{background:rgba(124,58,237,.15);color:#a78bfa}
+.tag-sport{background:rgba(6,214,160,.15);color:var(--a3)}
+.tag-gaming{background:rgba(255,209,102,.15);color:var(--a4)}
+.tag-science{background:rgba(56,189,248,.15);color:var(--a5)}
+.tag-culture{background:rgba(251,146,60,.15);color:var(--a6)}
+.tag-eco{background:rgba(45,212,191,.15);color:#2dd4bf}
+.tag-general{background:rgba(255,255,255,.07);color:var(--muted)}
+
+/* PH COLORS */
+.ph-monde{background:linear-gradient(135deg,rgba(255,61,107,.12),rgba(124,58,237,.12))}
+.ph-tech{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(14,165,233,.12))}
+.ph-sport{background:linear-gradient(135deg,rgba(6,214,160,.12),rgba(5,150,105,.12))}
+.ph-gaming{background:linear-gradient(135deg,rgba(255,209,102,.12),rgba(249,115,22,.12))}
+.ph-science{background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(6,214,160,.12))}
+.ph-culture{background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(251,191,36,.12))}
+.ph-eco{background:linear-gradient(135deg,rgba(45,212,191,.12),rgba(59,130,246,.12))}
+
+/* HERO GRID */
+.hero-grid{display:grid;grid-template-columns:1.85fr 1fr;grid-template-rows:1fr 1fr;gap:14px;margin-bottom:32px;min-height:500px}
+.hmain{grid-row:1/3;border-radius:20px;overflow:hidden;position:relative;cursor:pointer;background:var(--s1);display:flex;flex-direction:column;transition:box-shadow .3s}
+.hmain:hover{box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.hmain .himg{flex:1;position:relative;overflow:hidden}
+.hmain .himg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .55s cubic-bezier(.25,.46,.45,.94)}
+.hmain:hover .himg img{transform:scale(1.04)}
+.hmain .himg-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,16,1) 0%,rgba(8,8,16,.55) 35%,transparent 70%)}
+.hmain .htop{position:absolute;top:16px;left:16px;display:flex;gap:8px;align-items:center}
+.hmain .hinfo{position:absolute;bottom:0;left:0;right:0;padding:26px 30px}
+.htitle-xl{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;line-height:1.22;color:#fff;margin-bottom:8px}
+.htitle-md{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;line-height:1.3;flex:1}
+.cmeta{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);flex-wrap:wrap;margin-top:4px}
+.cmeta .csrc{color:var(--a2);font-weight:700;font-family:'Syne',sans-serif}
+.cmeta .csep{opacity:.25}
+.hside{border-radius:16px;overflow:hidden;cursor:pointer;background:var(--s1);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;border:1px solid var(--border)}
+.hside:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:var(--border2)}
+.hside .himg{height:155px;overflow:hidden;position:relative;flex-shrink:0}
+.hside .himg img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.hside:hover .himg img{transform:scale(1.06)}
+.hside .himg-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,16,.65),transparent)}
+.hside .hbadge{position:absolute;top:10px;left:10px}
+.hside .hbody{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.hread{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--a3);font-family:'Syne',sans-serif;font-weight:700;margin-top:auto;padding-top:8px;opacity:0;transition:opacity .2s}
+.hside:hover .hread{opacity:1}
+
+/* FILTER BAR */
+.fbar{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.fbtn{padding:6px 16px;border-radius:8px;border:1px solid var(--border);background:var(--s1);color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.fbtn:hover,.fbtn.on{border-color:var(--a2);color:var(--text);background:rgba(124,58,237,.1)}
+.fbar-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+/* SECTION HEADERS */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-ttl{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;display:flex;align-items:center;gap:10px}
+.sec-bar{width:3px;height:20px;border-radius:2px;flex-shrink:0}
+
+/* H-SCROLL */
+.hfwrap{margin-bottom:36px}
+.hfeed{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.hfeed::-webkit-scrollbar{display:none}
+.hcard{flex-shrink:0;width:245px;background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+.hcard:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(0,0,0,.45);border-color:var(--border2)}
+.hcard .hcimg{height:132px;overflow:hidden;position:relative}
+.hcard .hcimg img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.hcard:hover .hcimg img{transform:scale(1.07)}
+.hcard .hcbody{padding:12px 14px 14px}
+.hcard .hcttl{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;line-height:1.35;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hcard .hcmeta{font-size:11px;color:var(--muted);display:flex;gap:5px;align-items:center}
+.hcard .hcsrc{color:var(--a2);font-weight:700;font-family:'Syne',sans-serif}
+
+/* CONTENT + SIDEBAR */
+.cwrap{display:grid;grid-template-columns:1fr 310px;gap:28px;margin-bottom:36px}
+
+/* LIST CARDS */
+.lfeed{display:flex;flex-direction:column;gap:12px}
+.lcard{display:flex;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.lcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g1);opacity:0;transition:opacity .2s;border-radius:3px 0 0 3px}
+.lcard:hover{border-color:var(--border2);background:var(--s2)}
+.lcard:hover::before{opacity:1}
+.lcard .lthumb{width:108px;height:72px;border-radius:9px;object-fit:cover;flex-shrink:0}
+.lcard .lph{width:108px;height:72px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.lcard .lbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.lcard .lttl{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lcard .lexc{font-size:12.5px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lcard .lmeta{font-size:11.5px;color:var(--muted);display:flex;gap:6px;align-items:center;margin-top:2px;flex-wrap:wrap}
+.lcard .lsrc{color:var(--a2);font-weight:700;font-family:'Syne',sans-serif}
+.lcard .lsep{opacity:.25}
+.lcard .lext{margin-left:auto;flex-shrink:0;color:var(--muted2);opacity:0;transition:opacity .2s;align-self:center}
+.lcard:hover .lext{opacity:1}
+.lmore-btn{width:100%;background:var(--s2);border:1px solid var(--border);color:var(--text);padding:13px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;margin-top:14px}
+.lmore-btn:hover{border-color:var(--a2);color:var(--a2)}
+.lmore-btn:disabled{opacity:.3;cursor:default}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:18px}
+.widget{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px}
+.widget-ttl{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tlist{display:flex;flex-direction:column;gap:10px}
+.titem{display:flex;gap:11px;cursor:pointer;transition:all .2s;padding:8px;border-radius:10px;margin:-8px}
+.titem:hover{opacity:.8;background:var(--s2)}
+.tnum{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;width:24px;flex-shrink:0;color:var(--border2)}
+.titem:nth-child(1) .tnum{color:var(--a1)}
+.titem:nth-child(2) .tnum{color:var(--a2)}
+.titem:nth-child(3) .tnum{color:var(--a3)}
+.titem:nth-child(4) .tnum{color:var(--a4)}
+.titem:nth-child(5) .tnum{color:var(--a5)}
+.tttl{font-family:'Syne',sans-serif;font-weight:700;font-size:12.5px;line-height:1.35;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tmeta{font-size:11px;color:var(--muted);margin-top:3px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sbox{background:var(--s2);border-radius:10px;padding:12px;text-align:center}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.slbl{font-size:11px;color:var(--muted);margin-top:2px;font-family:'Syne',sans-serif}
+.mychlist{display:flex;flex-direction:column;gap:8px}
+.mrow{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;background:var(--s2);cursor:pointer;transition:background .2s}
+.mrow:hover{background:rgba(124,58,237,.1)}
+.mico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.mname{font-family:'Syne',sans-serif;font-weight:700;font-size:12.5px}
+.mcnt{font-size:11px;color:var(--muted)}
+.mbadge{margin-left:auto;background:var(--a1);color:#fff;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;padding:2px 8px;border-radius:50px}
+
+/* NEWSLETTER */
+.nl-sec{background:var(--s1);border:1px solid var(--border2);border-radius:24px;padding:56px 48px;text-align:center;position:relative;overflow:hidden;margin-bottom:36px}
+.nl-sec::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(124,58,237,.15) 0%,transparent 60%);pointer-events:none}
+.nl-sec::after{content:'';position:absolute;bottom:-80px;right:-60px;width:350px;height:350px;background:radial-gradient(ellipse,rgba(255,61,107,.08) 0%,transparent 60%);pointer-events:none}
+.nl-badge{display:inline-block;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:var(--a2);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:16px}
+.nl-title{font-family:'Bebas Neue',sans-serif;font-size:54px;letter-spacing:1px;line-height:1.05;margin-bottom:12px;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nl-sub{font-size:15px;color:var(--muted);max-width:460px;margin:0 auto 24px;line-height:1.65}
+.nl-perks{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.nl-perk{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px;font-family:'Syne',sans-serif}
+.nl-perk::before{content:'✓';color:var(--a3);font-weight:700}
+.nl-form{display:flex;gap:10px;max-width:450px;margin:0 auto}
+.nl-in{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:11px;padding:13px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+.nl-in:focus{border-color:var(--a2)}
+.nl-in::placeholder{color:var(--muted2)}
+.nl-btn{background:var(--g1);color:#fff;border:none;border-radius:11px;padding:13px 22px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s,transform .15s;white-space:nowrap}
+.nl-btn:hover{opacity:.86;transform:translateY(-1px)}
+#nlMsg{margin-top:14px;font-size:13px;color:var(--a3);display:none;font-family:'Syne',sans-serif;font-weight:600}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 24px;background:var(--s1)}
+.footer-inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:12.5px;color:var(--muted);text-decoration:none;font-family:'Syne',sans-serif;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-r{font-size:12px;color:var(--muted2);font-family:'Syne',sans-serif}
+
+/* SKELETON */
+.skel{background:linear-gradient(90deg,var(--s1) 25%,var(--s2) 50%,var(--s1) 75%);background-size:200% 100%;animation:shim 1.6s infinite;border-radius:6px}
+@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* FADE IN */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fin{animation:fadeUp .38s ease forwards;opacity:0}
+.fin2{animation:fadeUp .38s ease .1s forwards;opacity:0}
+.fin3{animation:fadeUp .38s ease .2s forwards;opacity:0}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.hero-grid{grid-template-columns:1fr 1fr}.hmain{grid-row:1;grid-column:1/3}.cwrap{grid-template-columns:1fr}.sidebar{display:none}}
+@media(max-width:700px){.hero-grid{grid-template-columns:1fr}.hmain,.hside{grid-column:1}.hmain{min-height:340px}.nl-form{flex-direction:column}.nl-title{font-size:38px}.searchbox{display:none}.hbtn-ghost{display:none}.nl-perks{gap:12px}}
 </style>
 </head>
 <body>
 
-<!-- SETUP BANNER -->
-<div id="setupBanner">
-  <span>⚡ <strong>Mode démo</strong> — Les articles sont des exemples. <a onclick="openModal()">Ajoute ta clé NewsData.io gratuite</a> pour les vraies actus en direct (fonctionne sur Vercel ✓)</span>
-  <button class="btn-setup" onclick="openModal()">Configurer →</button>
-  <button class="btn-setup" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted)" onclick="document.getElementById('setupBanner').remove()">✕</button>
-</div>
-
 <!-- CONFIG MODAL -->
-<div class="modal-overlay" id="configModal" onclick="if(event.target===this)closeModal()">
+<div class="overlay" id="cfgOverlay" onclick="if(event.target===this)closeCfg()">
   <div class="modal">
-    <div class="modal-title">⚡ Activer les vraies actus</div>
-    <div class="modal-sub">En 2 minutes, branche <strong style="color:var(--accent3)">NewsData.io</strong> pour avoir de vraies actualités en direct. C'est 100% gratuit et fonctionne sur tous les hébergeurs.</div>
-
-    <div class="modal-step">
-      <div class="step-num">ÉTAPE 1</div>
-      <div class="step-text">Va sur <a href="https://newsdata.io/register" target="_blank">newsdata.io/register</a> et crée un compte gratuit. Tu reçois une clé API immédiatement (200 req/jour gratuit).</div>
-    </div>
-    <div class="modal-step">
-      <div class="step-num">ÉTAPE 2</div>
-      <div class="step-text">Dans ton tableau de bord NewsData.io, copie ta clé API (format : <code style="color:var(--accent3);background:var(--surface);padding:1px 6px;border-radius:4px">pub_abc123...</code>) et colle-la ci-dessous.</div>
-    </div>
-    <div class="modal-step">
-      <div class="step-num">ÉTAPE 3</div>
-      <div class="step-text">C'est tout ! Contrairement à NewsAPI, NewsData.io fonctionne <strong style="color:var(--accent3)">aussi bien en local qu'en ligne sur Vercel</strong>. La clé est sauvegardée dans ton navigateur.</div>
-    </div>
-
-    <input class="modal-input" type="text" id="apiKeyInput" placeholder="Colle ta clé NewsAPI ici…" value="">
+    <button class="modal-close" onclick="closeCfg()">✕</button>
+    <h2>⚡ Activer les vraies actus</h2>
+    <p>Connecte <strong style="color:var(--a3)">The Guardian API</strong> — gratuite, illimitée, temps réel. Fonctionne parfaitement sur Vercel.</p>
+    <div class="modal-step"><strong>Étape 1 — Créer ta clé gratuite</strong>Va sur <a href="https://open-platform.theguardian.com/access/" target="_blank">open-platform.theguardian.com/access</a> → clique "Register developer key" → reçois ta clé par email immédiatement.</div>
+    <div class="modal-step"><strong>Étape 2 — Format</strong>Ta clé ressemble à : <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code></div>
+    <div class="modal-step"><strong>Étape 3 — Colle et active</strong>Colle ci-dessous. Rafraîchissement auto toutes les 2 min. Sauvegardée dans ton navigateur.</div>
+    <input class="modal-input" type="text" id="apiInput" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
     <div class="modal-actions">
-      <button class="btn-save" onclick="saveApiKey()">💾 Sauvegarder & charger les actus</button>
-      <button class="btn-demo" onclick="closeModal()">Continuer en démo</button>
+      <button class="btn-save" onclick="saveKey()">💾 Activer les vraies actus</button>
+      <button class="btn-skip" onclick="closeCfg()">Mode démo</button>
     </div>
   </div>
 </div>
 
 <!-- ARTICLE MODAL -->
-<div class="article-modal" id="articleModal" onclick="if(event.target===this)closeArticle()">
-  <div class="article-inner">
-    <img class="article-img" id="articleImg" src="" alt="">
-    <div class="article-content">
-      <button class="article-close" onclick="closeArticle()">✕</button>
-      <div id="articleTag"></div>
-      <div class="article-headline" id="articleTitle"></div>
-      <div class="article-desc" id="articleDesc"></div>
-      <a class="article-cta" id="articleLink" href="#" target="_blank" rel="noopener">Lire l'article complet →</a>
+<div class="art-overlay" id="artOverlay" onclick="if(event.target===this)closeArt()">
+  <div class="art-modal">
+    <div class="art-imgwrap" id="artImgWrap">
+      <button class="art-close-btn" onclick="closeArt()">✕</button>
+    </div>
+    <div class="art-body">
+      <div class="art-meta-top">
+        <span class="art-source" id="artSrc"></span>
+        <span style="color:var(--muted2);font-size:11px">·</span>
+        <span class="art-date-str" id="artDate"></span>
+      </div>
+      <div class="art-title" id="artTitle"></div>
+      <div class="art-desc" id="artDesc"></div>
+      <a class="art-cta" id="artLink" href="#" target="_blank" rel="noopener noreferrer">
+        Lire l'article complet sur la source
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+      </a>
     </div>
   </div>
 </div>
 
 <!-- HEADER -->
 <header>
-  <div class="header-inner">
-    <div class="logo" onclick="scrollTo(0,0)">Brefly</div>
-    <div class="search-bar">
-      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Rechercher une actu…" oninput="handleSearch(this.value)">
+  <div class="hdr">
+    <div class="logo" onclick="window.scrollTo(0,0)">Brefly<span class="logo-beta">beta</span></div>
+    <div class="searchbox">
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Rechercher une actu, un sujet…" oninput="onSearch(this.value)">
     </div>
-    <div class="header-right">
-      <span class="live-dot" id="liveIndicator">EN DIRECT</span>
-      <button class="btn-pill btn-outline" onclick="openModal()">⚙ Config</button>
-      <button class="btn-pill btn-primary" onclick="document.querySelector('.newsletter-section').scrollIntoView({behavior:'smooth'})">Newsletter</button>
+    <div class="hdr-right">
+      <div class="live-pill" id="livePill"><div class="pdot"></div><span id="liveText">EN DIRECT</span></div>
+      <button class="hbtn hbtn-api" id="cfgBtn" onclick="openCfg()" style="display:none">⚙ API</button>
+      <button class="hbtn hbtn-ghost" onclick="openCfg()">⚡ Activer</button>
+      <button class="hbtn hbtn-primary" onclick="document.querySelector('.nl-sec').scrollIntoView({behavior:'smooth'})">Newsletter</button>
     </div>
   </div>
 </header>
 
 <!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-label">🔴 BREAKING</div>
-  <div class="ticker-inner">
-    <div class="ticker-track ticker-animated" id="tickerTrack">
-      <span>Chargement des actualités en cours…</span>
+<div class="ticker">
+  <div class="ticker-lbl">🔴 BREAKING</div>
+  <div class="ticker-scroll">
+    <div class="ticker-track" id="tickerTrack">
+      <span class="ti">Chargement des dernières actualités en cours…</span>
     </div>
   </div>
 </div>
@@ -347,160 +361,116 @@ footer{border-top:1px solid var(--border);padding:28px 24px}
 <div class="page">
 
   <!-- CHANNELS -->
-  <div class="channels-section">
-    <div class="section-label">Vos chaînes — cliquez pour suivre / ne plus suivre</div>
-    <div class="channels-row">
-      <div class="channel-chip active" data-ch="monde" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#ff3d6b"></div>Monde
-        <button class="follow-btn following" onclick="event.stopPropagation();toggleFollow(this)">✓ Suivi</button>
-      </div>
-      <div class="channel-chip active" data-ch="tech" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#a78bfa"></div>Tech &amp; IA
-        <button class="follow-btn following" onclick="event.stopPropagation();toggleFollow(this)">✓ Suivi</button>
-      </div>
-      <div class="channel-chip" data-ch="sport" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#06d6a0"></div>Sport
-        <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">+ Suivre</button>
-      </div>
-      <div class="channel-chip" data-ch="gaming" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#ffd166"></div>Gaming
-        <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">+ Suivre</button>
-      </div>
-      <div class="channel-chip" data-ch="science" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#38bdf8"></div>Science
-        <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">+ Suivre</button>
-      </div>
-      <div class="channel-chip" data-ch="culture" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#fb923c"></div>Culture
-        <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">+ Suivre</button>
-      </div>
-      <div class="channel-chip" data-ch="eco" onclick="toggleChannel(this)">
-        <div class="dot" style="background:#2dd4bf"></div>Économie
-        <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">+ Suivre</button>
-      </div>
-    </div>
+  <div class="chbar">
+    <div class="cchip on" data-ch="monde" onclick="toggleCh(this)"><div class="cdot" style="background:#ff3d6b"></div>Monde<button class="cfollow on" onclick="event.stopPropagation()">✓</button></div>
+    <div class="cchip on" data-ch="tech" onclick="toggleCh(this)"><div class="cdot" style="background:#a78bfa"></div>Tech &amp; IA<button class="cfollow on" onclick="event.stopPropagation()">✓</button></div>
+    <div class="cchip" data-ch="sport" onclick="toggleCh(this)"><div class="cdot" style="background:#06d6a0"></div>Sport<button class="cfollow" onclick="event.stopPropagation()">+</button></div>
+    <div class="cchip" data-ch="gaming" onclick="toggleCh(this)"><div class="cdot" style="background:#ffd166"></div>Gaming<button class="cfollow" onclick="event.stopPropagation()">+</button></div>
+    <div class="cchip" data-ch="science" onclick="toggleCh(this)"><div class="cdot" style="background:#38bdf8"></div>Science<button class="cfollow" onclick="event.stopPropagation()">+</button></div>
+    <div class="cchip" data-ch="culture" onclick="toggleCh(this)"><div class="cdot" style="background:#fb923c"></div>Culture<button class="cfollow" onclick="event.stopPropagation()">+</button></div>
+    <div class="cchip" data-ch="eco" onclick="toggleCh(this)"><div class="cdot" style="background:#2dd4bf"></div>Économie<button class="cfollow" onclick="event.stopPropagation()">+</button></div>
   </div>
 
   <!-- STATUS -->
-  <div class="status-bar" id="statusBar">
-    <div class="status-dot" id="statusDot"></div>
-    <span id="statusText">Initialisation…</span>
-    <span style="margin-left:auto;font-size:11px" id="lastUpdate"></span>
+  <div class="sbar">
+    <div class="sdot" id="sdot"></div>
+    <span class="stxt" id="stxt">Initialisation…</span>
+    <span class="scnt" id="scnt" style="display:none"></span>
+    <span class="supd" id="supd"></span>
   </div>
 
-  <!-- FEATURED GRID -->
-  <div class="featured-grid" id="featuredGrid">
-    <!-- skeleton -->
-    <div class="card card-hero"><div class="img-wrap skeleton skel-img"></div><div class="card-body"><div class="skeleton skel-tag"></div><div class="skeleton skel-title"></div><div class="skeleton skel-title short"></div></div></div>
-    <div class="card-side">
-      <div class="card card-small"><div class="img-wrap skeleton" style="height:120px"></div><div class="card-body"><div class="skeleton skel-tag"></div><div class="skeleton skel-title"></div></div></div>
-      <div class="card card-small"><div class="img-wrap skeleton" style="height:120px"></div><div class="card-body"><div class="skeleton skel-tag"></div><div class="skeleton skel-title"></div></div></div>
-    </div>
+  <!-- HERO GRID -->
+  <div class="hero-grid" id="heroGrid">
+    <div class="hmain skel" style="min-height:480px"></div>
+    <div class="hside skel" style="height:240px"></div>
+    <div class="hside skel" style="height:240px"></div>
   </div>
 
   <!-- FILTER BAR -->
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="applyFilter(this,'all')">Tout</button>
-    <button class="filter-btn" onclick="applyFilter(this,'recent')">Les + récents</button>
-    <button class="filter-btn" onclick="applyFilter(this,'popular')">Populaires</button>
-    <span class="filter-count" id="articleCount"></span>
+  <div class="fbar">
+    <button class="fbtn on" onclick="setFilter(this,'all')">Tous</button>
+    <button class="fbtn" onclick="setFilter(this,'recent')">Plus récents</button>
+    <button class="fbtn" onclick="setFilter(this,'oldest')">Plus anciens</button>
+    <div class="fbar-r">
+      <span class="scnt" id="artCnt" style="display:inline-block"></span>
+    </div>
   </div>
 
   <!-- SPORT H-SCROLL -->
-  <div class="feed-section">
-    <div class="feed-header">
-      <div class="feed-title"><div class="bar" style="background:var(--accent3)"></div>Sport</div>
-    </div>
-    <div class="h-scroll" id="sportFeed">
-      <div class="h-card"><div class="img-wrap skeleton" style="height:130px"></div><div class="card-body"><div class="skeleton skel-title"></div></div></div>
-      <div class="h-card"><div class="img-wrap skeleton" style="height:130px"></div><div class="card-body"><div class="skeleton skel-title"></div></div></div>
-      <div class="h-card"><div class="img-wrap skeleton" style="height:130px"></div><div class="card-body"><div class="skeleton skel-title"></div></div></div>
+  <div class="hfwrap">
+    <div class="sec-hdr"><div class="sec-ttl"><div class="sec-bar" style="background:var(--a3)"></div>Sport</div></div>
+    <div class="hfeed" id="sportFeed">
+      <div class="hcard skel" style="height:198px;width:245px"></div>
+      <div class="hcard skel" style="height:198px;width:245px"></div>
+      <div class="hcard skel" style="height:198px;width:245px"></div>
     </div>
   </div>
 
-  <!-- CONTENT + SIDEBAR -->
-  <div class="content-area">
+  <!-- TECH H-SCROLL -->
+  <div class="hfwrap">
+    <div class="sec-hdr"><div class="sec-ttl"><div class="sec-bar" style="background:#a78bfa"></div>Tech &amp; IA</div></div>
+    <div class="hfeed" id="techFeed">
+      <div class="hcard skel" style="height:198px;width:245px"></div>
+      <div class="hcard skel" style="height:198px;width:245px"></div>
+      <div class="hcard skel" style="height:198px;width:245px"></div>
+    </div>
+  </div>
+
+  <!-- MAIN + SIDEBAR -->
+  <div class="cwrap">
     <div>
-      <div class="list-feed" id="listFeed">
-        <!-- skeleton rows -->
-        <div class="list-card"><div class="thumb-placeholder skeleton"></div><div class="list-body"><div class="skeleton skel-title" style="margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:80%"></div></div></div>
-        <div class="list-card"><div class="thumb-placeholder skeleton"></div><div class="list-body"><div class="skeleton skel-title" style="margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:70%"></div></div></div>
-        <div class="list-card"><div class="thumb-placeholder skeleton"></div><div class="list-body"><div class="skeleton skel-title" style="margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:85%"></div></div></div>
+      <div class="sec-hdr" style="margin-bottom:14px">
+        <div class="sec-ttl"><div class="sec-bar" style="background:linear-gradient(to bottom,#ff3d6b,#7c3aed)"></div>Toute l'actu</div>
       </div>
-      <div class="load-more" style="margin-top:16px">
-        <button class="btn-load" id="loadMoreBtn" onclick="loadMore()" disabled>Charger plus</button>
+      <div class="lfeed" id="listFeed">
+        <div class="lcard skel" style="height:88px"></div>
+        <div class="lcard skel" style="height:88px"></div>
+        <div class="lcard skel" style="height:88px"></div>
+        <div class="lcard skel" style="height:88px"></div>
       </div>
+      <button class="lmore-btn" id="lmoreBtn" onclick="loadMore()" disabled>Charger plus</button>
     </div>
     <aside class="sidebar">
-      <div class="sidebar-widget">
-        <div class="widget-title">🔥 Tendances</div>
-        <div class="trending-list" id="trendingList">
-          <div class="trending-item"><div class="trend-num">1</div><div><div class="skeleton" style="height:14px;width:140px;margin-bottom:4px"></div><div class="skeleton" style="height:11px;width:100px"></div></div></div>
-          <div class="trending-item"><div class="trend-num">2</div><div><div class="skeleton" style="height:14px;width:120px;margin-bottom:4px"></div><div class="skeleton" style="height:11px;width:90px"></div></div></div>
-          <div class="trending-item"><div class="trend-num">3</div><div><div class="skeleton" style="height:14px;width:130px;margin-bottom:4px"></div><div class="skeleton" style="height:11px;width:80px"></div></div></div>
+      <div class="widget">
+        <div class="widget-ttl">🔥 Tendances</div>
+        <div class="tlist" id="trendList">
+          <div class="titem"><div class="tnum">1</div><div><div class="skel" style="height:13px;width:150px;margin-bottom:5px;border-radius:4px"></div><div class="skel" style="height:11px;width:100px;border-radius:4px"></div></div></div>
+          <div class="titem"><div class="tnum">2</div><div><div class="skel" style="height:13px;width:130px;margin-bottom:5px;border-radius:4px"></div><div class="skel" style="height:11px;width:90px;border-radius:4px"></div></div></div>
+          <div class="titem"><div class="tnum">3</div><div><div class="skel" style="height:13px;width:140px;margin-bottom:5px;border-radius:4px"></div><div class="skel" style="height:11px;width:80px;border-radius:4px"></div></div></div>
         </div>
       </div>
-      <div class="sidebar-widget">
-        <div class="widget-title">📡 Mes Chaînes</div>
-        <div class="my-channels" id="myChanSidebar"></div>
+      <div class="widget">
+        <div class="widget-ttl">📊 En chiffres</div>
+        <div class="stats-grid">
+          <div class="sbox"><div class="snum" id="statTotal">—</div><div class="slbl">Articles</div></div>
+          <div class="sbox"><div class="snum">7</div><div class="slbl">Chaînes</div></div>
+          <div class="sbox"><div class="snum">2<span style="font-size:13px">mn</span></div><div class="slbl">Refresh</div></div>
+          <div class="sbox"><div class="snum">∞</div><div class="slbl">Guardian</div></div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-ttl">📡 Mes chaînes</div>
+        <div class="mychlist" id="mychList"></div>
       </div>
     </aside>
   </div>
 
   <!-- NEWSLETTER -->
-  <div class="newsletter-section">
-    <div class="nl-eyebrow">Newsletter quotidienne gratuite</div>
+  <div class="nl-sec">
+    <div class="nl-badge">Newsletter gratuite</div>
     <div class="nl-title">L'actu en bref,<br>chaque matin</div>
-    <div class="nl-sub">Recevez chaque matin les 5 articles les plus importants selon vos chaînes suivies.</div>
+    <div class="nl-sub">Une sélection des 5 articles les plus importants de la journée, personnalisée selon vos chaînes suivies.</div>
+    <div class="nl-perks">
+      <span class="nl-perk">Sans spam</span>
+      <span class="nl-perk">Désabonnement en 1 clic</span>
+      <span class="nl-perk">Sélection personnalisée</span>
+      <span class="nl-perk">Chaque matin à 7h</span>
+    </div>
     <div class="nl-form">
-      <input class="nl-input" type="email" id="nlEmail" placeholder="votre@email.com">
-      <button class="btn-subscribe" onclick="handleSubscribe()">M'abonner →</button>
+      <input class="nl-in" type="email" id="nlEmail" placeholder="votre@email.com">
+      <button class="nl-btn" onclick="subscribe()">S'abonner →</button>
     </div>
-    <div id="nlMsg">✓ Inscription enregistrée ! Configurez Brevo (gratuit) pour envoyer les mails — voir le guide ci-dessous 👇</div>
-  </div>
-
-  <!-- DEPLOY GUIDE -->
-  <div class="deploy-guide">
-    <div class="deploy-title">🚀 Mettre en ligne en 10 minutes</div>
-    <div class="deploy-sub">Tout ce qu'il faut pour transformer ce fichier en vrai site web accessible au monde entier, gratuitement.</div>
-    <div class="steps-grid">
-      <div class="deploy-step">
-        <div class="step-icon">🗝️</div>
-        <div class="step-name">1. NewsData.io (actus)</div>
-        <div class="step-desc">Crée un compte sur <a href="https://newsdata.io/register" target="_blank">newsdata.io</a> → copie ta clé → colle-la dans "Config". <strong style="color:var(--accent3)">Fonctionne en ligne sur Vercel</strong>, contrairement à NewsAPI. 200 req/jour gratuit.</div>
-        <div class="step-badge">GRATUIT</div>
-      </div>
-      <div class="deploy-step">
-        <div class="step-icon">▲</div>
-        <div class="step-name">2. Vercel (hébergement)</div>
-        <div class="step-desc">Va sur <a href="https://vercel.com" target="_blank">vercel.com</a>, crée un compte, glisse-dépose le dossier. Ton site est en ligne en 30 secondes.</div>
-        <div class="step-badge">GRATUIT</div>
-      </div>
-      <div class="deploy-step">
-        <div class="step-icon">🌐</div>
-        <div class="step-name">3. Nom de domaine</div>
-        <div class="step-desc">Achète <em>actualpulse.fr</em> ou autre sur <a href="https://www.ovhcloud.com/fr/domains/" target="_blank">OVH</a> (~6€/an). Pointe-le sur Vercel en 5 min.</div>
-        <div class="step-badge" style="background:rgba(255,61,107,.15);color:var(--accent1)">~6€/AN</div>
-      </div>
-      <div class="deploy-step">
-        <div class="step-icon">📧</div>
-        <div class="step-name">4. Brevo (newsletter)</div>
-        <div class="step-desc">Crée un compte sur <a href="https://www.brevo.com/fr/" target="_blank">brevo.com</a>. Connecte l'API pour envoyer des mails automatiques. 300 mails/jour gratuit.</div>
-        <div class="step-badge">GRATUIT</div>
-      </div>
-      <div class="deploy-step">
-        <div class="step-icon">🔒</div>
-        <div class="step-name">5. HTTPS automatique</div>
-        <div class="step-desc">Vercel active le certificat SSL gratuitement. Ton site sera sécurisé avec le cadenas 🔒 sans rien faire.</div>
-        <div class="step-badge">AUTOMATIQUE</div>
-      </div>
-      <div class="deploy-step">
-        <div class="step-icon">📊</div>
-        <div class="step-name">6. Analytics</div>
-        <div class="step-desc">Ajoute <a href="https://analytics.google.com" target="_blank">Google Analytics</a> gratuitement pour voir combien de visiteurs tu as chaque jour.</div>
-        <div class="step-badge">GRATUIT</div>
-      </div>
-    </div>
+    <div id="nlMsg">✓ Inscription enregistrée, bienvenue dans la communauté Brefly ! 🎉</div>
   </div>
 
 </div>
@@ -510,437 +480,332 @@ footer{border-top:1px solid var(--border);padding:28px 24px}
   <div class="footer-inner">
     <div class="footer-logo">Brefly</div>
     <div class="footer-links">
-      <a href="#">À propos</a><a href="#">Contact</a><a href="#">CGU</a><a href="#">Confidentialité</a>
+      <a href="#">À propos</a>
+      <a href="#">Contact</a>
+      <a href="#">CGU</a>
+      <a href="#">Confidentialité</a>
     </div>
-    <div class="footer-copy">© 2026 Brefly · Propulsé par NewsData.io · brefly.fr</div>
+    <div class="footer-r">© 2026 Brefly · The Guardian Open Platform</div>
   </div>
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════
-// CONFIG & STATE
-// ═══════════════════════════════════════════════════
-let API_KEY = localStorage.getItem('newsdata_key') || '';
-let allArticles = [];
-let displayedCount = 0;
-const PAGE_SIZE = 8;
-let currentFilter = 'all';
-let searchQuery = '';
+'use strict';
+let API_KEY = localStorage.getItem('guardian_key')||'';
+let ALL=[], shown=0;
+const PG=10;
+let fmode='all', sq='';
 
-const CHANNEL_QUERIES = {
-  monde:   { q:'world OR international OR geopolitique', label:'Monde',    icon:'🌍', color:'rgba(255,61,107,.15)' },
-  tech:    { q:'technology OR artificial intelligence OR AI', label:'Tech', icon:'💻', color:'rgba(124,58,237,.15)' },
-  sport:   { q:'football OR sport OR tennis OR olympics', label:'Sport',   icon:'⚽', color:'rgba(6,214,160,.15)'  },
-  gaming:  { q:'gaming OR video games OR esport',        label:'Gaming',   icon:'🎮', color:'rgba(255,209,102,.15)'},
-  science: { q:'science OR research OR space OR NASA',   label:'Science',  icon:'🔬', color:'rgba(17,138,178,.15)' },
-  culture: { q:'cinema OR music OR culture OR art',      label:'Culture',  icon:'🎨', color:'rgba(255,159,28,.15)' },
-  eco:     { q:'economy OR finance OR market OR bitcoin', label:'Économie',icon:'📈', color:'rgba(46,196,182,.15)' },
+const CH={
+  monde:  {label:'Monde',   icon:'🌍',color:'rgba(255,61,107,.13)',  sec:'world',      tc:'tag-monde'},
+  tech:   {label:'Tech',    icon:'💻',color:'rgba(124,58,237,.13)',  sec:'technology', tc:'tag-tech'},
+  sport:  {label:'Sport',   icon:'⚽',color:'rgba(6,214,160,.13)',   sec:'sport',      tc:'tag-sport'},
+  gaming: {label:'Gaming',  icon:'🎮',color:'rgba(255,209,102,.13)', sec:null,         tc:'tag-gaming'},
+  science:{label:'Science', icon:'🔬',color:'rgba(56,189,248,.13)',  sec:'science',    tc:'tag-science'},
+  culture:{label:'Culture', icon:'🎨',color:'rgba(251,146,60,.13)',  sec:'culture',    tc:'tag-culture'},
+  eco:    {label:'Éco',     icon:'📈',color:'rgba(45,212,191,.13)',  sec:'business',   tc:'tag-eco'},
 };
 
-const TAG_COLORS = { monde:'tag-monde', tech:'tag-tech', sport:'tag-sport', gaming:'tag-gaming', science:'tag-science', culture:'tag-culture', eco:'tag-eco', general:'tag-general' };
-
-// ═══════════════════════════════════════════════════
-// DEMO DATA (fallback when no API key)
-// ═══════════════════════════════════════════════════
-const DEMO_ARTICLES = [
-  { title:"Sommet Climatique : accord historique signé à Genève", description:"Les 196 pays membres ont signé un texte contraignant visant le zéro émission net d'ici 2045, une première dans l'histoire de la diplomatie climatique.", urlToImage:"https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80", url:"#", source:{name:"Le Monde"}, publishedAt: new Date().toISOString(), ch:'monde' },
-  { title:"GPT-6 dévoilé : la mémoire longue durée change tout", description:"OpenAI annonce son nouveau modèle capable de retenir des conversations sur des mois entiers. Une révolution pour les assistants IA personnels.", urlToImage:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&q=80", url:"#", source:{name:"TechCrunch"}, publishedAt: new Date().toISOString(), ch:'tech' },
-  { title:"Fusion nucléaire : 12h de plasma stable, record mondial", description:"Le réacteur ITER a maintenu un plasma stable pendant 12 heures consécutives, franchissant un cap symbolique majeur pour l'énergie du futur.", urlToImage:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80", url:"#", source:{name:"Science Daily"}, publishedAt: new Date().toISOString(), ch:'science' },
-  { title:"GTA VI : Rockstar confirme la date de sortie", description:"Après des années d'attente, la sortie est officiellement fixée au 26 septembre 2026. Un trailer final de 4 minutes a été dévoilé.", urlToImage:"https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=300&q=80", url:"#", source:{name:"IGN France"}, publishedAt: new Date().toISOString(), ch:'gaming' },
-  { title:"PSG champion d'Europe : les coulisses d'une victoire épique", description:"Après une finale haletante contre Manchester City, le PSG remporte sa première Ligue des Champions. Retour sur une saison historique.", urlToImage:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80", url:"#", source:{name:"L'Équipe"}, publishedAt: new Date().toISOString(), ch:'sport' },
-  { title:"Le Bitcoin franchit les 150 000 $ : analyse de la hausse", description:"En moins de trois mois, la crypto phare a doublé de valeur. Les analystes s'interrogent sur la durabilité de ce mouvement historique.", urlToImage:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=300&q=80", url:"#", source:{name:"Les Échos"}, publishedAt: new Date().toISOString(), ch:'eco' },
-  { title:"Cannes 2026 : la Palme d'Or récompense un film franco-japonais", description:"Le jury a surpris la Croisette en couronnant cette co-production inédite, saluée pour sa vision humaniste et son esthétique unique.", urlToImage:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=300&q=80", url:"#", source:{name:"Libération"}, publishedAt: new Date().toISOString(), ch:'culture' },
-  { title:"Apple Vision Pro 2 à 1 499 € : le pari de la démocratisation", description:"Apple frappe fort en divisant le prix de son casque par deux. Une stratégie visant à conquérir le grand public avant Noël.", urlToImage:"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=300&q=80", url:"#", source:{name:"MacGeneration"}, publishedAt: new Date().toISOString(), ch:'tech' },
-  { title:"Élections au Brésil : percée historique d'un nouveau parti", description:"Les résultats préliminaires indiquent un bouleversement de l'échiquier politique brésilien avec l'émergence d'une troisième force centriste.", urlToImage:"https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=300&q=80", url:"#", source:{name:"Courrier International"}, publishedAt: new Date().toISOString(), ch:'monde' },
-  { title:"SpaceX lance la mission Mars-2 avec 6 astronautes", description:"La fusée Starship a décollé depuis Boca Chica avec pour destination Mars. Un trajet de 7 mois s'annonce pour les membres de l'équipage.", urlToImage:"https://images.unsplash.com/photo-1518364538800-6bae3c2ea0f2?w=300&q=80", url:"#", source:{name:"NASA"}, publishedAt: new Date().toISOString(), ch:'science' },
-  { title:"Formule 1 : Verstappen signe chez Ferrari pour 2026", description:"La rumeur est confirmée. Le triple champion du monde rejoindra la Scuderia Ferrari, dans ce qui constitue le transfert de la décennie.", urlToImage:"https://images.unsplash.com/photo-1543351611-58f69d7c1781?w=300&q=80", url:"#", source:{name:"Auto Hebdo"}, publishedAt: new Date().toISOString(), ch:'sport' },
-  { title:"Minecraft dépasse le milliard de joueurs uniques", description:"Microsoft annonce que son jeu culte a franchi le cap symbolique d'un milliard de joueurs, confirmant son statut de jeu le plus joué de l'histoire.", urlToImage:"https://images.unsplash.com/photo-1587163419804-c8586e80680f?w=300&q=80", url:"#", source:{name:"Gamekult"}, publishedAt: new Date().toISOString(), ch:'gaming' },
+const DEMO=[
+  {title:"Accord climatique historique : 196 nations signent l'engagement net zéro 2045",description:"Les négociateurs ont signé un texte contraignant lors du sommet de Genève. Une première dans l'histoire de la diplomatie climatique mondiale.",urlToImage:"https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&q=80",url:"https://www.theguardian.com/environment/climate-crisis",source:"The Guardian",pub:new Date().toISOString(),ch:'monde'},
+  {title:"GPT-6 dévoilé : mémoire persistante et raisonnement en temps réel",description:"OpenAI frappe fort avec un modèle capable de retenir des mois de conversations et de raisonner sur des données en direct.",urlToImage:"https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&q=80",url:"https://www.theguardian.com/technology/artificialintelligenceai",source:"The Guardian",pub:new Date(Date.now()-3600000).toISOString(),ch:'tech'},
+  {title:"Fusion nucléaire : ITER bat le record mondial avec 12h de plasma stable",description:"Le tokamak français franchit un cap historique vers l'énergie quasi-illimitée. La décennie 2030 pourrait voir les premières centrales.",urlToImage:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=80",url:"https://www.theguardian.com/science",source:"The Guardian",pub:new Date(Date.now()-7200000).toISOString(),ch:'science'},
+  {title:"Ligue des Champions : le PSG sacré pour la première fois de son histoire",description:"Après une finale épique aux tirs au but contre Manchester City, Paris s'offre la couronne européenne après 54 ans d'attente.",urlToImage:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=700&q=80",url:"https://www.theguardian.com/football",source:"The Guardian",pub:new Date(Date.now()-14400000).toISOString(),ch:'sport'},
+  {title:"GTA VI : Rockstar confirme la sortie au 26 septembre 2026",description:"Un trailer final de 4 minutes révèle une Floride photoréaliste. Le jeu le plus attendu de la décennie entre dans sa dernière ligne droite.",urlToImage:"https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=700&q=80",url:"https://www.theguardian.com/games",source:"The Guardian",pub:new Date(Date.now()-21600000).toISOString(),ch:'gaming'},
+  {title:"Bitcoin à 150 000 $ : les grands fonds institutionnels derrière la flambée",description:"Des analyses internes révèlent que 60% du mouvement haussier est attribué aux entrées massives des fonds de pension américains.",urlToImage:"https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=700&q=80",url:"https://www.theguardian.com/technology/bitcoin",source:"The Guardian",pub:new Date(Date.now()-28800000).toISOString(),ch:'eco'},
+  {title:"Cannes 2026 : une coproduction franco-japonaise remporte la Palme d'Or",description:"Le jury présidé par Cate Blanchett couronne un film bouleversant sur la mémoire et l'exil, acclamé à la standing ovation.",urlToImage:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=700&q=80",url:"https://www.theguardian.com/film",source:"The Guardian",pub:new Date(Date.now()-36000000).toISOString(),ch:'culture'},
+  {title:"Apple Vision Pro 2 à 1 499 € : la réalité mixte entre dans l'ère grand public",description:"Apple divise le prix par deux et annonce des partenariats avec Netflix, Disney et Adobe. Un tournant stratégique majeur.",urlToImage:"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=700&q=80",url:"https://www.theguardian.com/technology/apple",source:"The Guardian",pub:new Date(Date.now()-43200000).toISOString(),ch:'tech'},
+  {title:"SpaceX : 6 astronautes partent pour Mars dans une mission sans précédent",description:"Le Starship a décollé depuis Boca Chica, cap sur la planète rouge. 7 mois de voyage dans l'espace profond attendent l'équipage.",urlToImage:"https://images.unsplash.com/photo-1518364538800-6bae3c2ea0f2?w=700&q=80",url:"https://www.theguardian.com/science/space",source:"The Guardian",pub:new Date(Date.now()-50400000).toISOString(),ch:'science'},
+  {title:"Formule 1 : Verstappen rejoint Ferrari, séisme dans le paddock",description:"Le triple champion du monde quitte Red Bull pour rejoindre la Scuderia en 2026. Un transfert historique qui redistribue toutes les cartes.",urlToImage:"https://images.unsplash.com/photo-1543351611-58f69d7c1781?w=700&q=80",url:"https://www.theguardian.com/sport/formulaone",source:"The Guardian",pub:new Date(Date.now()-57600000).toISOString(),ch:'sport'},
+  {title:"Élections au Brésil : émergence d'une troisième force centriste historique",description:"Le mouvement Esperança Brasil remporte 23% des voix, bousculant un bipartisme installé depuis trois décennies.",urlToImage:"https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=700&q=80",url:"https://www.theguardian.com/world/brazil",source:"The Guardian",pub:new Date(Date.now()-64800000).toISOString(),ch:'monde'},
+  {title:"Minecraft franchit le milliard de joueurs actifs, record absolu",description:"17 ans après sa création, le jeu bac à sable reste le plus joué de l'histoire. Microsoft célèbre avec une mise à jour monumentale.",urlToImage:"https://images.unsplash.com/photo-1587163419804-c8586e80680f?w=700&q=80",url:"https://www.theguardian.com/games",source:"The Guardian",pub:new Date(Date.now()-72000000).toISOString(),ch:'gaming'},
 ];
 
-// ═══════════════════════════════════════════════════
-// NEWSDATA.IO FETCH — fonctionne en ligne, 200 req/jour gratuit
-// ═══════════════════════════════════════════════════
-async function fetchNewsData(query, size=10) {
-  const url = `https://newsdata.io/api/1/news?apikey=${API_KEY}&q=${encodeURIComponent(query)}&language=fr&size=${size}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  if (data.status === 'error') throw new Error(data.results?.message || 'Erreur API');
-  // Normalise au format interne
-  return (data.results || []).map(a => ({
-    title:        a.title        || '',
-    description:  a.description  || a.content || '',
-    urlToImage:   a.image_url    || null,
-    url:          a.link         || '#',
-    source:       { name: a.source_id || a.source_name || 'Source' },
-    publishedAt:  a.pubDate      || new Date().toISOString(),
+// ── GUARDIAN API ──────────────────────────
+async function gFetch(sec, q, n=20){
+  let u=`https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=trailText,thumbnail&page-size=${n}&order-by=newest`;
+  if(sec) u+=`&section=${sec}`;
+  if(q)   u+=`&q=${encodeURIComponent(q)}`;
+  const r=await fetch(u);
+  if(!r.ok) throw new Error(`HTTP ${r.status}`);
+  const d=await r.json();
+  if(d.response?.status==='error') throw new Error('API key invalid');
+  return (d.response?.results||[]).map(a=>({
+    title:a.webTitle||'',
+    description:a.fields?.trailText||'',
+    urlToImage:a.fields?.thumbnail||null,
+    url:a.webUrl||'#',
+    source:'The Guardian',
+    pub:a.webPublicationDate||new Date().toISOString(),
+    ch:null
   }));
 }
+function norm(arr,ch){return arr.map(a=>({...a,ch}));}
+function dedup(arr){const s=new Set();return arr.filter(a=>{if(!a.title||a.title==='[Removed]'||s.has(a.title))return false;s.add(a.title);return true;});}
 
-async function fetchLatestFr(size=20) {
-  const url = `https://newsdata.io/api/1/latest?apikey=${API_KEY}&country=fr&language=fr&size=${size}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  if (data.status === 'error') throw new Error(data.results?.message || 'Erreur API');
-  return (data.results || []).map(a => ({
-    title:        a.title        || '',
-    description:  a.description  || a.content || '',
-    urlToImage:   a.image_url    || null,
-    url:          a.link         || '#',
-    source:       { name: a.source_id || a.source_name || 'Source' },
-    publishedAt:  a.pubDate      || new Date().toISOString(),
-  }));
+// ── INIT ──────────────────────────────────
+async function init(){
+  setStatus('loading'); renderMyCh();
+  if(API_KEY){document.getElementById('cfgBtn').style.display='flex'; await loadLive();}
+  else loadDemo();
 }
-
-// ═══════════════════════════════════════════════════
-// INIT & LOAD
-// ═══════════════════════════════════════════════════
-async function init() {
-  setStatus('loading');
-  updateSidebar();
-  if (API_KEY) {
-    const banner = document.getElementById('setupBanner');
-    if (banner) banner.remove();
-    await loadRealNews();
-  } else {
-    loadDemoNews();
-  }
-}
-
-async function loadRealNews() {
-  try {
+async function loadLive(){
+  try{
     setStatus('loading');
-    // Fetch actus françaises + sport + tech en parallèle
-    const [headlines, sportArts, techArts] = await Promise.all([
-      fetchLatestFr(20),
-      fetchNewsData('football OR sport OR tennis', 8),
-      fetchNewsData('technologie OR intelligence artificielle OR startup', 8),
+    const [wr,te,sp,sc,cu,ec,gm]=await Promise.all([
+      gFetch('world',null,22),gFetch('technology',null,16),gFetch('sport',null,16),
+      gFetch('science',null,14),gFetch('culture',null,14),
+      gFetch('business','economy OR finance OR market',14),
+      gFetch(null,'gaming OR "video games" OR esport',10),
     ]);
-
-    const tagged      = headlines.map(a => ({ ...a, ch: guessChannel(a) }));
-    const sportTagged = sportArts.map(a => ({ ...a, ch: 'sport' }));
-    const techTagged  = techArts.map(a => ({ ...a, ch: 'tech' }));
-
-    allArticles = dedup([...tagged, ...techTagged, ...sportTagged]);
-    renderAll();
-    setStatus('live');
-    updateLastUpdate();
-    updateTicker(allArticles.slice(0, 10));
-  } catch(e) {
-    console.warn('NewsData.io error:', e.message);
-    setStatus('error', 'Erreur API — vérifiez votre clé NewsData.io. Mode démo activé.');
-    loadDemoNews();
+    ALL=dedup([...norm(wr,'monde'),...norm(te,'tech'),...norm(sp,'sport'),...norm(sc,'science'),...norm(cu,'culture'),...norm(ec,'eco'),...norm(gm,'gaming')]);
+    renderAll(); setStatus('live');
+    document.getElementById('supd').textContent='Mis à jour '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    console.warn(e.message); setStatus('error','Clé invalide — mode démo activé'); loadDemo();
   }
 }
+function loadDemo(){ALL=[...DEMO];renderAll();setStatus('demo');}
 
-function loadDemoNews() {
-  allArticles = [...DEMO_ARTICLES];
-  renderAll();
-  setStatus('demo');
-  updateTicker(allArticles);
-}
-
-function guessChannel(article) {
-  const text = ((article.title||'') + ' ' + (article.description||'')).toLowerCase();
-  if (/foot|sport|tennis|nba|fifa|jo|olymp/.test(text)) return 'sport';
-  if (/ai|intelligence artificielle|tech|apple|google|microsoft|openai/.test(text)) return 'tech';
-  if (/bitcoin|bourse|économie|inflation|finance|cac40/.test(text)) return 'eco';
-  if (/jeu vidéo|gaming|esport|xbox|playstation|steam/.test(text)) return 'gaming';
-  if (/science|espace|nasa|recherche|climat|nucléaire/.test(text)) return 'science';
-  if (/cinéma|musique|culture|cannes|festival/.test(text)) return 'culture';
-  return 'monde';
-}
-
-function dedup(articles) {
-  const seen = new Set();
-  return articles.filter(a => {
-    if (!a.title || seen.has(a.title)) return false;
-    seen.add(a.title);
-    return a.title !== '[Removed]';
+// ── RENDER ALL ────────────────────────────
+function getFiltered(){
+  const ac=getActiveCh();
+  let a=ALL.filter(x=>{
+    const mc=ac.length===0||ac.includes(x.ch);
+    const ms=!sq||((x.title||'')+(x.description||'')).toLowerCase().includes(sq);
+    return mc&&ms;
   });
+  if(fmode==='recent') a.sort((x,y)=>new Date(y.pub)-new Date(x.pub));
+  if(fmode==='oldest') a.sort((x,y)=>new Date(x.pub)-new Date(y.pub));
+  return a;
+}
+function renderAll(){
+  const f=getFiltered();
+  const ac=document.getElementById('artCnt');
+  ac.textContent=f.length+' article'+(f.length>1?'s':''); ac.style.display='inline-block';
+  document.getElementById('statTotal').textContent=ALL.length;
+  renderHero(f.slice(0,3));
+  renderHFeed('sportFeed',ALL.filter(a=>a.ch==='sport').slice(0,8));
+  renderHFeed('techFeed', ALL.filter(a=>a.ch==='tech').slice(0,8));
+  shown=0; document.getElementById('listFeed').innerHTML='';
+  doMore(f); renderTrend(f); renderMyCh(); renderTicker(f.slice(0,16));
 }
 
-// ═══════════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════════
-function renderAll() {
-  const filtered = getFilteredArticles();
-  document.getElementById('articleCount').textContent = `${filtered.length} article${filtered.length>1?'s':''}`;
-  renderFeatured(filtered.slice(0, 3));
-  renderSportScroll(allArticles.filter(a => a.ch === 'sport').slice(0, 6));
-  displayedCount = 0;
-  document.getElementById('listFeed').innerHTML = '';
-  loadMore(filtered);
-  renderTrending(filtered);
-  updateSidebar();
-}
-
-function getFilteredArticles() {
-  const activeChannels = getActiveChannels();
-  return allArticles.filter(a => {
-    const matchCh = activeChannels.length === 0 || activeChannels.includes(a.ch);
-    const matchSearch = !searchQuery || ((a.title||'')+(a.description||'')).toLowerCase().includes(searchQuery);
-    return matchCh && matchSearch;
-  });
-}
-
-function getActiveChannels() {
-  return [...document.querySelectorAll('.channel-chip.active')].map(c => c.dataset.ch);
-}
-
-function renderFeatured(articles) {
-  if (!articles.length) return;
-  const grid = document.getElementById('featuredGrid');
-  const [a0, a1, a2] = articles;
-  grid.innerHTML = `
-    <div class="card card-hero fade-in" onclick="openArticle(${JSON.stringify(a0).replace(/"/g,'&quot;')})">
-      <div class="img-wrap">${a0.urlToImage ? `<img src="${a0.urlToImage}" alt="" onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80'">` : '<div style="height:280px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:48px">📰</div>'}</div>
-      <div class="card-body">
-        <div class="card-source">${a0.source?.name || 'Actu'}</div>
-        <div class="tag ${TAG_COLORS[a0.ch]||'tag-general'}">${(CHANNEL_QUERIES[a0.ch]||{label:'Info'}).label}</div>
-        <div class="card-title">${escHtml(a0.title)}</div>
-        <div class="card-meta"><span>${timeAgo(a0.publishedAt)}</span></div>
-      </div>
+// ── HERO ──────────────────────────────────
+function renderHero(arts){
+  const g=document.getElementById('heroGrid');
+  if(!arts.length){g.innerHTML='';return;}
+  const [a0,a1,a2]=arts;
+  const c0=CH[a0.ch]||CH.monde;
+  g.innerHTML=`
+  <div class="hmain fin" onclick="openArt(${idxOf(a0)})">
+    <div class="himg">
+      ${a0.urlToImage?`<img src="${esc(a0.urlToImage)}" alt="" loading="lazy" onerror="this.remove()">`:``}
+      <div class="himg-grad"></div>
     </div>
-    <div class="card-side">
-      ${[a1,a2].filter(Boolean).map(a => `
-        <div class="card card-small fade-in" onclick="openArticle(${JSON.stringify(a).replace(/"/g,'&quot;')})">
-          <div class="img-wrap">${a.urlToImage ? `<img src="${a.urlToImage}" alt="" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80'">` : '<div style="height:120px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:32px">📰</div>'}</div>
-          <div class="card-body">
-            <div class="card-source">${a.source?.name || ''}</div>
-            <div class="tag ${TAG_COLORS[a.ch]||'tag-general'}">${(CHANNEL_QUERIES[a.ch]||{label:'Info'}).label}</div>
-            <div class="card-title">${escHtml(a.title)}</div>
-            <div class="card-meta"><span>${timeAgo(a.publishedAt)}</span></div>
-          </div>
-        </div>`).join('')}
-    </div>`;
+    <div class="htop"><span class="tag ${c0.tc}">${c0.label}</span><span style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,.55)">${esc(a0.source||'')}</span></div>
+    <div class="hinfo">
+      <div class="htitle-xl">${esc(a0.title)}</div>
+      ${a0.description?`<div style="font-size:13px;color:rgba(255,255,255,.55);line-height:1.55;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(a0.description)}</div>`:''}
+      <div class="cmeta" style="color:rgba(255,255,255,.4)"><span>${timeAgo(a0.pub)}</span><span class="csep">·</span><span>Lire l'article complet →</span></div>
+    </div>
+  </div>
+  ${[a1,a2].filter(Boolean).map((a,i)=>{const c=CH[a.ch]||CH.monde;return`
+  <div class="hside ${i===0?'fin2':'fin3'}" onclick="openArt(${idxOf(a)})">
+    <div class="himg">
+      ${a.urlToImage?`<img src="${esc(a.urlToImage)}" alt="" loading="lazy" onerror="this.remove()">`:``}
+      <div class="himg-grad"></div>
+      <div class="hbadge"><span class="tag ${c.tc}">${c.label}</span></div>
+    </div>
+    <div class="hbody">
+      <div style="font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;color:var(--a2);margin-bottom:5px">${esc(a.source||'')}</div>
+      <div class="htitle-md">${esc(a.title)}</div>
+      <div class="cmeta"><span>${timeAgo(a.pub)}</span></div>
+      <div class="hread">Lire l'article <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg></div>
+    </div>
+  </div>`;}).join('')}`;
 }
 
-function renderSportScroll(articles) {
-  const feed = document.getElementById('sportFeed');
-  if (!articles.length) { feed.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px">Aucune actu sport disponible.</p>'; return; }
-  feed.innerHTML = articles.map(a => `
-    <div class="h-card fade-in" onclick="openArticle(${JSON.stringify(a).replace(/"/g,'&quot;')})">
-      <div class="img-wrap">${a.urlToImage ? `<img src="${a.urlToImage}" alt="" onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&q=80'">` : '<div style="height:130px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:32px">⚽</div>'}</div>
-      <div class="card-body">
-        <div class="tag tag-sport" style="margin-bottom:6px">Sport</div>
-        <div class="card-title">${escHtml(a.title)}</div>
-        <div class="card-meta" style="margin-top:6px"><span>${a.source?.name||''}</span><span class="sep">·</span><span>${timeAgo(a.publishedAt)}</span></div>
+// ── H-FEED ────────────────────────────────
+function renderHFeed(id,arts){
+  const f=document.getElementById(id);
+  if(!arts.length){f.innerHTML='<p style="color:var(--muted);font-size:13px">Aucun article.</p>';return;}
+  f.innerHTML=arts.map(a=>{const c=CH[a.ch]||CH.monde;return`
+  <div class="hcard fin" onclick="openArt(${idxOf(a)})">
+    <div class="hcimg">
+      ${a.urlToImage?`<img src="${esc(a.urlToImage)}" alt="" loading="lazy" onerror="this.parentNode.className='hcimg ph-${a.ch}';this.remove()">`:
+      `<div class="hcimg ph-${a.ch}" style="display:flex;align-items:center;justify-content:center;font-size:28px">${c.icon}</div>`}
+    </div>
+    <div class="hcbody">
+      <div style="margin-bottom:5px"><span class="tag ${c.tc}">${c.label}</span></div>
+      <div class="hcttl">${esc(a.title)}</div>
+      <div class="hcmeta"><span class="hcsrc">${esc(a.source||'')}</span><span style="opacity:.25">·</span><span>${timeAgo(a.pub)}</span></div>
+    </div>
+  </div>`;}).join('');
+}
+
+// ── LIST FEED ─────────────────────────────
+function doMore(filtered){
+  const skip=3, chunk=filtered.slice(skip+shown,skip+shown+PG);
+  const feed=document.getElementById('listFeed');
+  chunk.forEach(a=>{
+    const c=CH[a.ch]||CH.monde;
+    const el=document.createElement('div');
+    el.className='lcard fin'; el.onclick=()=>openArt(idxOf(a));
+    el.innerHTML=`
+    ${a.urlToImage?`<img class="lthumb" src="${esc(a.urlToImage)}" alt="" loading="lazy" onerror="this.className='lph ph-${a.ch}';this.innerHTML='${c.icon}';this.removeAttribute('src')">`:
+    `<div class="lph ph-${a.ch}">${c.icon}</div>`}
+    <div class="lbody">
+      <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:3px">
+        <span class="tag ${c.tc}">${c.label}</span>
+        <span style="font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;color:var(--a2)">${esc(a.source||'')}</span>
       </div>
-    </div>`).join('');
-}
-
-function loadMore(filtered) {
-  const articles = filtered || getFilteredArticles();
-  const chunk = articles.slice(displayedCount + 3, displayedCount + 3 + PAGE_SIZE); // skip featured 3
-  if (displayedCount === 0) document.getElementById('listFeed').innerHTML = '';
-  chunk.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'list-card fade-in';
-    card.onclick = () => openArticle(a);
-    card.innerHTML = `
-      ${a.urlToImage ? `<img class="thumb" src="${a.urlToImage}" alt="" onerror="this.style.display='none'">` : `<div class="thumb-placeholder">${CHANNEL_QUERIES[a.ch]?.icon||'📰'}</div>`}
-      <div class="list-body">
-        <div class="card-source">${a.source?.name||''}</div>
-        <div class="tag ${TAG_COLORS[a.ch]||'tag-general'}" style="margin-bottom:4px">${(CHANNEL_QUERIES[a.ch]||{label:'Info'}).label}</div>
-        <div class="card-title">${escHtml(a.title)}</div>
-        <div class="excerpt">${escHtml(a.description||'')}</div>
-        <div class="card-meta" style="margin-top:6px"><span>${timeAgo(a.publishedAt)}</span></div>
-      </div>`;
-    document.getElementById('listFeed').appendChild(card);
+      <div class="lttl">${esc(a.title)}</div>
+      ${a.description?`<div class="lexc">${esc(a.description.substring(0,160))}</div>`:''}
+      <div class="lmeta"><span>${timeAgo(a.pub)}</span></div>
+    </div>
+    <svg class="lext" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>`;
+    feed.appendChild(el);
   });
-  displayedCount += chunk.length;
-  const btn = document.getElementById('loadMoreBtn');
-  btn.disabled = displayedCount + 3 >= articles.length;
-  btn.textContent = btn.disabled ? 'Tout est affiché ✓' : `Charger plus (${articles.length - displayedCount - 3} restants)`;
+  shown+=chunk.length;
+  const btn=document.getElementById('lmoreBtn');
+  const rem=filtered.length-3-shown;
+  btn.disabled=rem<=0;
+  btn.textContent=rem>0?`Charger ${Math.min(PG,rem)} articles de plus`:'Tout est affiché ✓';
 }
+function loadMore(){doMore(getFiltered());}
 
-function renderTrending(articles) {
-  const list = document.getElementById('trendingList');
-  const top5 = articles.slice(0, 5);
-  list.innerHTML = top5.map((a,i) => `
-    <div class="trending-item" onclick="openArticle(${JSON.stringify(a).replace(/"/g,'&quot;')})">
-      <div class="trend-num">${i+1}</div>
-      <div>
-        <div class="trend-text">${escHtml(a.title.substring(0,60))}${a.title.length>60?'…':''}</div>
-        <div class="trend-meta">${a.source?.name||''} · ${(CHANNEL_QUERIES[a.ch]||{label:'Info'}).label}</div>
-      </div>
-    </div>`).join('');
-}
-
-// ═══════════════════════════════════════════════════
-// TICKER
-// ═══════════════════════════════════════════════════
-function updateTicker(articles) {
-  const track = document.getElementById('tickerTrack');
-  const items = articles.map(a => `<span>${escHtml(a.title.substring(0,80))}</span><span class="dot">✦</span>`).join('');
-  track.innerHTML = items + items; // duplicate for seamless loop
-  track.classList.remove('ticker-animated');
-  void track.offsetWidth;
-  track.classList.add('ticker-animated');
-}
-
-// ═══════════════════════════════════════════════════
-// ARTICLE MODAL
-// ═══════════════════════════════════════════════════
-function openArticle(a) {
-  document.getElementById('articleImg').src = a.urlToImage || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
-  document.getElementById('articleImg').onerror = function(){ this.style.display='none' };
-  document.getElementById('articleTag').innerHTML = `<div class="tag ${TAG_COLORS[a.ch]||'tag-general'}">${(CHANNEL_QUERIES[a.ch]||{label:'Info'}).label}</div>`;
-  document.getElementById('articleTitle').textContent = a.title;
-  document.getElementById('articleDesc').textContent = a.description || 'Cliquez sur le lien ci-dessous pour lire l\'article complet sur le site source.';
-  document.getElementById('articleLink').href = a.url && a.url !== '#' ? a.url : '#';
-  document.getElementById('articleLink').style.display = a.url && a.url !== '#' ? 'inline-block' : 'none';
-  document.getElementById('articleModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeArticle() {
-  document.getElementById('articleModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if(e.key==='Escape'){closeArticle();closeModal();} });
-
-// ═══════════════════════════════════════════════════
-// CHANNEL TOGGLE
-// ═══════════════════════════════════════════════════
-function toggleChannel(chip) {
-  chip.classList.toggle('active');
-  const btn = chip.querySelector('.follow-btn');
-  if (chip.classList.contains('active')) {
-    btn.textContent = '✓ Suivi'; btn.classList.add('following');
-  } else {
-    btn.textContent = '+ Suivre'; btn.classList.remove('following');
-  }
-  renderAll();
-}
-function toggleFollow(btn) {
-  const chip = btn.closest('.channel-chip');
-  chip.classList.toggle('active');
-  if (chip.classList.contains('active')) {
-    btn.textContent = '✓ Suivi'; btn.classList.add('following');
-  } else {
-    btn.textContent = '+ Suivre'; btn.classList.remove('following');
-  }
-  renderAll();
-}
-
-// ═══════════════════════════════════════════════════
-// SIDEBAR
-// ═══════════════════════════════════════════════════
-function updateSidebar() {
-  const active = getActiveChannels();
-  const counts = {};
-  allArticles.forEach(a => { counts[a.ch] = (counts[a.ch]||0)+1; });
-  const sidebar = document.getElementById('myChanSidebar');
-  sidebar.innerHTML = Object.entries(CHANNEL_QUERIES).map(([key,cfg]) => {
-    const isActive = active.includes(key);
-    const count = counts[key] || 0;
-    return `<div class="my-ch-row" style="${!isActive?'opacity:.4':''}" onclick="document.querySelector('.channel-chip[data-ch=${key}]').click()">
-      <div class="ch-icon" style="background:${cfg.color}">${cfg.icon}</div>
-      <div><div class="ch-name">${cfg.label}</div><div class="ch-count">${isActive ? count+' articles' : 'Non suivi'}</div></div>
-      ${isActive && count > 0 ? `<div class="ch-badge">${count}</div>` : ''}
+// ── TRENDING ──────────────────────────────
+function renderTrend(arts){
+  document.getElementById('trendList').innerHTML=arts.slice(0,5).map((a,i)=>{
+    const c=CH[a.ch]||CH.monde;
+    return`<div class="titem" onclick="openArt(${idxOf(a)})">
+      <div class="tnum">${i+1}</div>
+      <div><div class="tttl">${esc(a.title.substring(0,72))}${a.title.length>72?'…':''}</div>
+      <div class="tmeta">${esc(a.source||'')} · ${c.label}</div></div>
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════
-// SEARCH & FILTER
-// ═══════════════════════════════════════════════════
-function handleSearch(val) {
-  searchQuery = val.toLowerCase().trim();
+// ── TICKER ────────────────────────────────
+function renderTicker(arts){
+  if(!arts.length)return;
+  const items=arts.map((a,i)=>`<span class="ti" onclick="openArt(${i})">${esc(a.title.substring(0,90))}</span><span class="tsep">✦</span>`).join('');
+  const t=document.getElementById('tickerTrack');
+  t.innerHTML=items+items;
+  t.style.animation='none'; void t.offsetWidth;
+  t.style.animation='tickmove 55s linear infinite';
+}
+
+// ── ARTICLE MODAL ─────────────────────────
+function idxOf(a){return ALL.indexOf(a);}
+function openArt(i){
+  const a=ALL[i]; if(!a)return;
+  const c=CH[a.ch]||CH.monde;
+  const wrap=document.getElementById('artImgWrap');
+  if(a.urlToImage){
+    wrap.style.height='380px';
+    wrap.innerHTML=`<button class="art-close-btn" onclick="closeArt()">✕</button>
+      <img src="${esc(a.urlToImage)}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">
+      <div class="grad"></div>
+      <div style="position:absolute;bottom:20px;left:32px"><span class="tag ${c.tc}">${c.label}</span></div>`;
+  }else{
+    wrap.style.height='130px';
+    wrap.innerHTML=`<button class="art-close-btn" onclick="closeArt()">✕</button>
+      <div class="ph-${a.ch}" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:48px">${c.icon}</div>
+      <div style="position:absolute;bottom:14px;left:32px"><span class="tag ${c.tc}">${c.label}</span></div>`;
+  }
+  document.getElementById('artSrc').textContent=a.source||'Source';
+  document.getElementById('artDate').textContent=fmtDate(a.pub);
+  document.getElementById('artTitle').textContent=a.title;
+  document.getElementById('artDesc').textContent=a.description||'Cliquez sur le lien ci-dessous pour lire l\'article complet sur la source.';
+  const lnk=document.getElementById('artLink');
+  lnk.href=a.url&&a.url!=='#'?a.url:'#';
+  lnk.style.display=a.url&&a.url!=='#'?'inline-flex':'none';
+  document.getElementById('artOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeArt(){document.getElementById('artOverlay').classList.remove('open');document.body.style.overflow='';}
+
+// ── CHANNELS ──────────────────────────────
+function getActiveCh(){return[...document.querySelectorAll('.cchip.on')].map(c=>c.dataset.ch);}
+function toggleCh(chip){
+  chip.classList.toggle('on');
+  const b=chip.querySelector('.cfollow');
+  if(chip.classList.contains('on')){b.textContent='✓';b.classList.add('on');}
+  else{b.textContent='+';b.classList.remove('on');}
   renderAll();
 }
-function applyFilter(btn, type) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentFilter = type;
-  if (type === 'recent') allArticles.sort((a,b) => new Date(b.publishedAt)-new Date(a.publishedAt));
-  renderAll();
+
+// ── SIDEBAR MY CHANNELS ───────────────────
+function renderMyCh(){
+  const ac=getActiveCh(), cnts={};
+  ALL.forEach(a=>{if(a.ch)cnts[a.ch]=(cnts[a.ch]||0)+1;});
+  document.getElementById('mychList').innerHTML=Object.entries(CH).map(([k,c])=>{
+    const on=ac.includes(k), n=cnts[k]||0;
+    return`<div class="mrow" style="${!on?'opacity:.32':''}" onclick="document.querySelector('.cchip[data-ch=${k}]').click()">
+      <div class="mico" style="background:${c.color}">${c.icon}</div>
+      <div><div class="mname">${c.label}</div><div class="mcnt">${on?n+' article'+(n>1?'s':''):'Non suivi'}</div></div>
+      ${on&&n?`<div class="mbadge">${n}</div>`:''}
+    </div>`;
+  }).join('');
 }
 
-// ═══════════════════════════════════════════════════
-// STATUS
-// ═══════════════════════════════════════════════════
-function setStatus(type, msg) {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  const live = document.getElementById('liveIndicator');
-  dot.className = 'status-dot';
-  if (type === 'live') {
-    dot.classList.add('live'); txt.textContent = 'Actus en direct via NewsData.io';
-    live.style.color = 'var(--accent3)';
-  } else if (type === 'demo') {
-    txt.textContent = 'Mode démo — ajoutez une clé NewsData.io pour les vraies actus';
-    live.style.color = 'var(--accent4)';
-  } else if (type === 'error') {
-    dot.classList.add('error'); txt.textContent = msg || 'Erreur de connexion';
-    live.style.color = 'var(--accent1)';
-  } else {
-    txt.textContent = 'Chargement…';
-  }
-}
-function updateLastUpdate() {
-  document.getElementById('lastUpdate').textContent = 'Mis à jour ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+// ── STATUS ────────────────────────────────
+function setStatus(t,msg){
+  const d=document.getElementById('sdot'),s=document.getElementById('stxt');
+  const lp=document.getElementById('livePill'),lt=document.getElementById('liveText'),pd=lp.querySelector('.pdot');
+  d.className='sdot';
+  if(t==='live'){d.classList.add('live');s.textContent='Actus en direct · The Guardian ∞';lt.textContent='EN DIRECT';lp.style.color='var(--a3)';pd.style.background='var(--a3)';}
+  else if(t==='demo'){s.textContent='Mode démo · Clique "Activer" pour les vraies actus';lt.textContent='DÉMO';lp.style.color='var(--a4)';pd.style.background='var(--a4)';}
+  else if(t==='error'){d.classList.add('err');s.textContent=msg||'Erreur API';lt.textContent='ERREUR';lp.style.color='var(--a1)';pd.style.background='var(--a1)';}
+  else{s.textContent='Chargement…';}
 }
 
-// ═══════════════════════════════════════════════════
-// CONFIG MODAL
-// ═══════════════════════════════════════════════════
-function openModal() { document.getElementById('configModal').classList.add('open'); }
-function closeModal() { document.getElementById('configModal').classList.remove('open'); }
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (key.length < 20) { document.getElementById('apiKeyInput').style.borderColor='var(--accent1)'; return; }
-  API_KEY = key;
-  localStorage.setItem('newsdata_key', key);
-  closeModal();
-  document.getElementById('setupBanner') && document.getElementById('setupBanner').remove();
-  loadRealNews();
+// ── SEARCH & FILTER ───────────────────────
+function onSearch(v){sq=v.toLowerCase().trim();renderAll();}
+function setFilter(btn,mode){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');fmode=mode;renderAll();}
+
+// ── CONFIG MODAL ──────────────────────────
+function openCfg(){document.getElementById('cfgOverlay').classList.add('open');}
+function closeCfg(){document.getElementById('cfgOverlay').classList.remove('open');}
+function saveKey(){
+  const k=document.getElementById('apiInput').value.trim();
+  if(k.length<20){document.getElementById('apiInput').style.borderColor='var(--a1)';return;}
+  API_KEY=k; localStorage.setItem('guardian_key',k); closeCfg();
+  document.getElementById('cfgBtn').style.display='flex'; loadLive();
 }
 
-// ═══════════════════════════════════════════════════
-// NEWSLETTER
-// ═══════════════════════════════════════════════════
-function handleSubscribe() {
-  const email = document.getElementById('nlEmail').value;
-  const msg = document.getElementById('nlMsg');
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    const subs = JSON.parse(localStorage.getItem('subscribers')||'[]');
-    if (!subs.includes(email)) { subs.push(email); localStorage.setItem('subscribers', JSON.stringify(subs)); }
-    msg.style.display = 'block';
-    document.getElementById('nlEmail').value = '';
-  } else {
-    document.getElementById('nlEmail').style.borderColor = 'var(--accent1)';
-    setTimeout(() => document.getElementById('nlEmail').style.borderColor = '', 1500);
+// ── NEWSLETTER ────────────────────────────
+function subscribe(){
+  const v=document.getElementById('nlEmail').value, m=document.getElementById('nlMsg');
+  if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){
+    const s=JSON.parse(localStorage.getItem('subs')||'[]');
+    if(!s.includes(v)){s.push(v);localStorage.setItem('subs',JSON.stringify(s));}
+    m.style.display='block'; document.getElementById('nlEmail').value='';
+  }else{
+    document.getElementById('nlEmail').style.borderColor='var(--a1)';
+    setTimeout(()=>document.getElementById('nlEmail').style.borderColor='',1500);
   }
 }
 
-// ═══════════════════════════════════════════════════
-// AUTO REFRESH (every 5 min)
-// ═══════════════════════════════════════════════════
-setInterval(() => { if (API_KEY) loadRealNews(); }, 5 * 60 * 1000);
-
-// ═══════════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════════
-function timeAgo(dateStr) {
-  if (!dateStr) return '';
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  if (diff < 60) return 'À l\'instant';
-  if (diff < 3600) return `Il y a ${Math.floor(diff/60)} min`;
-  if (diff < 86400) return `Il y a ${Math.floor(diff/3600)}h`;
-  return `Il y a ${Math.floor(diff/86400)} j`;
+// ── UTILS ────────────────────────────────
+function timeAgo(d){
+  if(!d)return'';const s=(Date.now()-new Date(d))/1000;
+  if(s<60)return"À l'instant";if(s<3600)return`Il y a ${Math.floor(s/60)} min`;
+  if(s<86400)return`Il y a ${Math.floor(s/3600)}h`;return`Il y a ${Math.floor(s/86400)} j`;
 }
-function escHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-// ═══════════════════════════════════════════════════
-// START
-// ═══════════════════════════════════════════════════
-if (API_KEY) document.getElementById('apiKeyInput').value = API_KEY;
+// ── KEYBOARD ─────────────────────────────
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeArt();closeCfg();}});
+
+// ── AUTO-REFRESH ─────────────────────────
+setInterval(()=>{if(API_KEY)loadLive();},2*60*1000);
+
+// ── START ─────────────────────────────────
+if(API_KEY)document.getElementById('apiInput').value=API_KEY;
 init();
 </script>
 </body>
